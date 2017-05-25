@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta charset="utf-8">
+	<meta name="keywords" content="标题">
+	<meta name="description" content="内容">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>index</title>
+</head>
+<script type="text/javascript">
+// for(var i = 0 ;i<10;i++){
+//     (function(){ //使用函数自执行,创建一个作用域
+//         //console.log("one",i) 
+//         var j = i;//将当前i值赋给另一个变量, 并且被该闭包中的回调函数所持有
+//         setTimeout(function(){
+//             console.log(j);         //这个回调函数持有当前作用域中 j的值
+//         },j*1000)
+//     }())
+// }
+
+// ----------------------------------------------
+// foo();
+// var foo; 
+// function foo(){
+//     console.log(1);
+// }
+// function foo(){
+//     console.log(2);
+// }
+// console.log(foo);
+
+// ----------------------------------------------
+{
+	for(var  j=0;j<5;j++){
+		var i = j;
+		console.log(i);
+		setTimeout(function(){
+            console.log(i);         //这个回调函数持有当前作用域中 j的值
+        },i*1000)
+	}
+}
+//console.log(i); //5 ,如果把i的声明var改成let,就可以了
+
+//-----------------------------------------------
+// var foo = true;
+// if (foo) {
+// var bar = foo * 5;  //这里使用var, 那么他会作用整个作用域, 但是let不会
+// console.log( bar );
+// }
+// console.log(bar);  
+
+</script>
+
+<body>
+
+</body>
+</html>
