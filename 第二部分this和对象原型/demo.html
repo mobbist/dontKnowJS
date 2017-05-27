@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta charset="utf-8">
+	<meta name="keywords" content="标题">
+	<meta name="description" content="内容">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>index</title>
+</head>
+<script type="text/javascript">
+
+function bar(){
+    //第二个参数 arguments 是个对象, 也是唯一能传参的对象, 其他值必须是数组
+    return foo.apply(obj,arguments);  
+    // return foo.apply(obj,[1,2,3]);   //功能同上,
+    //return foo.apply(obj,{a:1,b:2});  //undefined
+
+   //call方法和apply一样, 只是传参是通过参数一个个逗号分隔写下去 
+  // return foo.call(obj,1,2,3)
+}
+var obj = {
+    a:1
+}
+function foo(num){
+    console.log(this.a,num);
+}
+
+
+bar(1,2,3);
+
+foo.bind(obj)(5);
+</script>
+
+<body>
+
+</body>
+</html>
