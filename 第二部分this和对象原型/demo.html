@@ -11,6 +11,8 @@
 <script type="text/javascript">
 
 function bar(){
+    var fkd = [].slice.call( arguments, 0 );
+    console.log(fkd[0]);
     //第二个参数 arguments 是个对象, 也是唯一能传参的对象, 其他值必须是数组
     return foo.apply(obj,arguments);  
     // return foo.apply(obj,[1,2,3]);   //功能同上,
@@ -22,14 +24,76 @@ function bar(){
 var obj = {
     a:1
 }
+
 function foo(num){
+    //this的绑定规则取决于调用位置
     console.log(this.a,num);
 }
 
+//调用bar方法, 内部apply方法(显示绑定)将this指向为obj
+bar("one","two");
 
-bar(1,2,3);
-
+//ES5方法, 将bind方法的参数指向为调用的这个方法(foo)的this指向
 foo.bind(obj)(5);
+
+//直接调用foo, 则会采用默认绑定, 在非 strict模式下, 会指向全局,  在 strice模式下为undefined
+foo(1);
+
+var  obj2 ={
+    a:15,
+    foo:foo //将这个foo函数做为对象的一部分
+}
+obj2.foo(1); //当 foo() 被调用时，它的落脚点确实指向 obj2 对象
+
+console.log("----------------------");
+function abc(something){
+    this.a = something;
+}
+var objSomething = {};
+
+//bind方法返回这个abc函数(硬编码), 将bind方法的参数,改为abc函数的this指向
+var bar2 = abc.bind(objSomething);  
+
+//此时的bar2函数内的this指向已经被改未objSomething
+bar2(5); 
+
+//将objSomething的a值改为前面传参的5
+console.log(objSomething.a);        
+ //bar2函数内虽然此时的this指向为objSomething, 但由于new 绑定存在, 并没有像预计那样改变objSomething的值,相反,new改变了硬绑定(bar2)函数的this指向
+var fd = new bar2(1);
+//并没有像预计那样改变
+console.log(objSomething.a);   
+//new改变了bar2函数内的this指向
+console.log(fd.a);
+
+console.log("----------------------");
+
+function select(a,b,c,d){
+    console.log(a,b,c,d);
+}
+
+select.apply(null,[1,2,3,4]);   
+var  select2 = select.bind(null,1,2);
+select2(3,4);
+
+console.log("----------------------");
+
+function funHanle(){
+    console.log(this.a);
+}
+var  thisObj = {a:3,funHanle:funHanle};
+
+//隐式绑定
+thisObj.funHanle(); 
+
+var  newObj = {a:11};
+//赋值表达式  zbc = thisObj.funHanle 的返回值是目标函数的引用，因此调用位置是 foo() 而不是p.foo() 或者 o.foo()。
+(newObj.funHanle = thisObj.funHanle)();
+newObj.funHanle();
+
+console.log("--------对象-----------");
+
+
 </script>
 
 <body>
