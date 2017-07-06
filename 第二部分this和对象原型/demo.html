@@ -92,7 +92,53 @@ var  newObj = {a:11};
 newObj.funHanle();
 
 console.log("--------对象-----------");
+var object5 = {
+    name:"mobb",
+    age:20
+}
 
+console.log(Object.keys(object5)); //["name","age"]
+
+var number = Symbol(5);
+var number2 = Symbol(5);
+console.log(number == number2); //false
+console.log(number == 5);  //false
+
+var symbol = Symbol();
+var newObj2 = {
+    name:"mobb",
+    age:20,
+    [symbol]:"a",
+    toString:function(){
+       return 2
+    }
+        
+}
+console.log(newObj2);
+for( let keys in newObj2){
+    console.log(keys);  // symbol类型不会被遍历
+}
+
+
+
+
+const COLOR_RED    = Symbol();
+const COLOR_GREEN  = Symbol();
+
+function getComplement(color) {
+  switch (color) {
+    case COLOR_RED:
+      return COLOR_GREEN;
+    case COLOR_GREEN:
+      return COLOR_RED;
+    default:
+      throw new Error('Undefined color');
+    }
+}
+console.log(newObj2.toString());
+
+
+console.log("-----------------混合对象类---------");
 
 </script>
 
