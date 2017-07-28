@@ -140,6 +140,92 @@ console.log(newObj2.toString());
 
 console.log("-----------------混合对象类---------");
 
+function  minxiObj(){
+    this.a = 1
+}
+//原本 prototype.constructor是指向minxiObj,此处我修改了prototype的值, 导致minxiObj的原型链中没有minxiObj这个对象,
+// 那么当原型链下游来访问的时候, 找不到, 就会继续委托给顶端的object.prototype
+minxiObj.prototype = { a:1, } 
+
+//构造fda
+var fda  =new minxiObj();
+//fda是由minxiObj创建的, 但是之前因为改变了prototype内的constructor, 所以指向变为了Object,  但是Object并没有构造过fda, 由此可以看出
+//.constructor 只是通过默认的 [[Prototype]] 委托指向 minxiObj，这和“构造”毫无关系。
+console.log(minxiObj.prototype.constructor);
+
+
+
+
+console.log("原型继承");
+
+function Super(name){
+    this.name = name
+}
+Super.prototype.getName = function(){
+    return this.name;
+}
+
+var s = new Super("mobb");
+console.log(s.getName());
+
+
+
+function Ponser(name,age){
+   Super.call(this,name);
+   this.age = age;
+}
+//通过Object.creat方法可以创建一个对象, 并且将该对象的prototype关联到参数对象, (这句是自己理解的)
+//创建一个新的 Ponser.prototype 对象并把它关联到 Super.prototype”(这句是书上的,一致)
+//Ponser.prototype = Object.create(Super.prototype);
+
+//!!请注意: 不能使用 Ponser.prototype = Super.prototype;
+//因此当你执行类似 Ponser.prototype.getAge = ... 的赋值语句时会直接修改 Foo.prototype 对象本身,显然这不是你想要的结果，
+//Ponser.prototype = Super.prototype;
+
+//Ponser.prototype = new Super();
+//var s1 = new Super("mobb3");
+//Super原型链上本身不存在getAge属性, 因为上面一句直接修改了Foo.prototype本身导致了, super也有了getAge方法, 这显然是不符合预期的
+//console.log(s1.getAge);  
+
+
+// ES6 开始可以直接修改现有的 Bar.prototype
+Object.setPrototypeOf( Ponser.prototype, Super.prototype );
+
+Ponser.prototype.getAge = function(){
+    return this.age;
+}
+
+//Ponser.prototype = Super.prototype;
+var p1 = new Ponser("mobb2",30);
+console.log(p1);
+var s1 = new Super("mobb");
+console.log(s1.__proto__);
+console.log(Object.getPrototypeOf(s1));
+
+
+
+console.log("Object.create方法解析");
+var sas = Object.create(p1,{//创建一个sas对象与p1对象的原型链进行关联
+    abc:{  //定义自己的属性
+        value:"新值"
+    }
+});  
+console.log(sas.constructor); 
+
+
+// sas{
+//     "__proto__" :{   //这里开始就是关联到的原型链
+//         name:"mobb2",
+//         age:"20"
+//     }
+// } 
+
+
+console.log("----------------行为委托------------------");
+
+
+
+
 </script>
 
 <body>
