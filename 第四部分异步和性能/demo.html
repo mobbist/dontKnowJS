@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta charset="utf-8">
+	<meta name="keywords" content="标题">
+	<meta name="description" content="内容">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>index</title>
+</head>
+<script type="text/javascript">
+
+//要理解promise的运作方式, 最好能使用回调与其进行对比
+
+//设计一个add函数, 把2个值进行相加
+function add(a,b){
+	return a+b;
+}
+
+//通过回调来异步获取a
+function getA(fn){
+	//在这里设计如何获取这个异步的a, 现实情况可能是通过接口得到
+	setTimeout(function(){
+		fn("call5");
+	},3000)
+}
+
+getA(function(num){
+	//在别人使用的时候, 回调方式可能会出现多种问题, 比如 多次调用   或者没有调用
+	console.log(num);
+})
+
+//通过promise来实现获取异步a
+function PgetA(){
+	return new Promise(function(resolve,reject){
+		setTimeout(function(){
+			resolve("p5")
+		},5000)
+	})
+}
+
+
+PgetA().then(function(result){
+	console.log(result);
+})
+
+
+</script>
+
+<body>
+
+</body>
+</html>
