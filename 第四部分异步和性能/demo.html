@@ -21,7 +21,7 @@ function add(a,b){
 function getA(fn){
 	//在这里设计如何获取这个异步的a, 现实情况可能是通过接口得到
 	setTimeout(function(){
-		fn("call5");
+		fn("call5"); //一个深入的安全性问题, 如何信任这个函数肯定可以执行, 并能得到想要的效果呢?
 	},3000)
 }
 
@@ -44,6 +44,50 @@ PgetA().then(function(result){
 	console.log(result);
 })
 
+
+console.log("-----可信任的promise-------");
+//这只是一个带有then方法的thenable,并不是真正的Promise
+var p = {
+	then:function(fn,error){
+		fn();
+		error();
+	}
+}
+
+//可以使用promise.resolve()方法过滤一下,它可以接受非promise的thenable
+// var p1 = Promise.resolve(p);
+
+// console.log(p1);
+// p1.then(function(){
+// 	console.log(123);
+// },function(){
+// 	//如果不使用resolve方法过滤一下, 那么就会走到这里
+// 	console.log("error");
+// })
+
+
+
+//尝试设计一个promise的组件, 当有数据, 才渲染组件
+function createComponent(data){
+	return new Promise(function(resolve,reject){
+		
+		resolve("<div>"+data.data+"</div>");
+	})
+}
+
+function getData(){
+	return new Promise(function(resolve,reject){e
+		resolve({data:"ok"});
+	})
+}
+
+
+
+getData().then(function(data){
+	return createComponent(data);
+}).then(function(html){
+	console.log(html);
+})
 
 </script>
 
